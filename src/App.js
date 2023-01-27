@@ -7,11 +7,11 @@ import useHttp from './Hooks/useHttp';
 
 
 
-
+let changingId;
 function App() {
   const [newObj, setNewObj] = useState({});
   const [tasks, setTasks] = useState([]);
-  const [editingObj, setEditingObj] = useState();
+  const [editingObj, setEditingObj] = useState({ title: '', description: '', fullDescription: '' });
   const [editinMode, setEditingMode] = useState(false);
   const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
@@ -53,6 +53,7 @@ function App() {
       // })
     })
 
+
     // fetch('https://63d2513e06556a0fdd3930ff.mockapi.io/data', {
     //   method: 'POST', // or 'PUT'
     //   headers: {
@@ -72,15 +73,34 @@ function App() {
     // console.log(e);
 
   }
+  const editDataHandler = (e) => {
+    fetchTasks({
+      url: `https://63d2513e06556a0fdd3930ff.mockapi.io/data/${changingId}`,
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: e,
+    }, (data) => {
+      // console.log('hi');
+      // setTasks(...tasks, e);
+      setNewObj(e);
+      // return ((prevState) => {
+      //   return [...prevState, data];
+      // })
+    })
+  }
   const cardDeletHandler = (e) => {
     setNewObj(e);
     // console.log('from app');
     // console.log(e);
   }
   const cardEditHandler = (e) => {
+    changingId = e;
     // console.log('from app');
     // console.log(e);
-    setEditingObj(tasks.filter((el) => el.id === e));
+    const editedObj = tasks.filter((el) => el.id === e);
+    setEditingObj(editedObj[0]);
     setEditingMode(true);
   }
   return (
@@ -88,7 +108,7 @@ function App() {
       <CardContainer>
         {tasks.map((el, index) => <Card key={index} title={el.title} id={el.id} description={el.description} fullDescription={el.fullDescription} onDelete={cardDeletHandler} onEdit={cardEditHandler} />)}
       </CardContainer>
-      <AddPart addData={addDataHandler} editingObj={editingObj} editingMode={editinMode} />
+      <AddPart editData={editDataHandler} addData={addDataHandler} editingObj={editingObj} editingMode={editinMode} />
       {/* {console.log(tasks)}
       {console.log(newObj)} */}
       {/* {console.log(editingObj)} */}
