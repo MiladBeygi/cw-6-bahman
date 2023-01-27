@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import AddPart from './Components/AddPart/AddPart';
 import Card from './Components/Card/Card';
@@ -11,7 +11,11 @@ import useHttp from './Hooks/useHttp';
 function App() {
   const [newObj, setNewObj] = useState({});
   const [tasks, setTasks] = useState([]);
+  const [editingObj, setEditingObj] = useState();
+  const [editinMode, setEditingMode] = useState(false);
   const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+
+
 
   function transformTasks(data) {
     setTasks(data);
@@ -68,14 +72,26 @@ function App() {
     // console.log(e);
 
   }
+  const cardDeletHandler = (e) => {
+    setNewObj(e);
+    // console.log('from app');
+    // console.log(e);
+  }
+  const cardEditHandler = (e) => {
+    // console.log('from app');
+    // console.log(e);
+    setEditingObj(tasks.filter((el) => el.id === e));
+    setEditingMode(true);
+  }
   return (
     <div className="App flex w-11/12 mx-[auto] my-2">
       <CardContainer>
-        {tasks.map((el, index) => <Card key={index} title={el.title} description={el.description} fullDescription={el.fullDescription} />)}
+        {tasks.map((el, index) => <Card key={index} title={el.title} id={el.id} description={el.description} fullDescription={el.fullDescription} onDelete={cardDeletHandler} onEdit={cardEditHandler} />)}
       </CardContainer>
-      <AddPart addData={addDataHandler} />
+      <AddPart addData={addDataHandler} editingObj={editingObj} editingMode={editinMode} />
       {/* {console.log(tasks)}
       {console.log(newObj)} */}
+      {/* {console.log(editingObj)} */}
     </div>
   );
 }

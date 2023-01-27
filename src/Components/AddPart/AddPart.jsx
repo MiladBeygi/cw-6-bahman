@@ -2,33 +2,30 @@ import React, { useState } from "react";
 import useHttp from "../../Hooks/useHttp";
 function AddPart(props) {
     // const { isLoading, error, sendRequest: sendCard } = useHttp();
-
+    const [editingCard, setEditingCard] = useState({ title: '', description: '', fullDescription: '' });
     const [card, setCard] = useState({ title: '', description: '', fullDescription: '' });
+    if (props.editingMode) {
+        setCard(props.editingObj)
+    }
     const titleChangehandler = (e) => {
         setCard((prevState) => {
             return { ...prevState, title: e.target.value }
         })
+
     };
     const descriptionChangehandler = (e) => {
         setCard((prevState) => {
             return { ...prevState, description: e.target.value }
         })
+
     };
     const fDescriptionChangehandler = (e) => {
         setCard((prevState) => {
             return { ...prevState, fullDescription: e.target.value }
         })
+
     };
     const addButtonHandler = (e) => {
-        // console.log(card)
-        // sendCard({
-        //     url: 'https://63d2513e06556a0fdd3930ff.mockapi.io/data',
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-type': 'application/json; charset=UTF-8',
-        //     },
-        //     body: JSON.stringify(card),
-        // }, (data) => { console.log(data) })
         props.addData(card);
         setCard({ title: '', description: '', fullDescription: '' });
     }
@@ -53,6 +50,7 @@ function AddPart(props) {
             <button onClick={addButtonHandler} className="text-xl bg-slate-500 px-[10px] mx-2 rounded-xl absolute bottom-[-45px] right-[65px]">Add</button>
         </div>
         {/* {console.log(card)} */}
+        {console.log(editingCard)}
     </div>
 }
 export default AddPart;
