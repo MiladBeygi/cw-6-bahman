@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import useHttp from "../../Hooks/useHttp";
 function AddPart(props) {
+    // const { isLoading, error, sendRequest: sendCard } = useHttp();
+
     const [card, setCard] = useState({ title: '', description: '', fullDescription: '' });
     const titleChangehandler = (e) => {
         setCard((prevState) => {
@@ -17,6 +20,15 @@ function AddPart(props) {
         })
     };
     const addButtonHandler = (e) => {
+        // console.log(card)
+        // sendCard({
+        //     url: 'https://63d2513e06556a0fdd3930ff.mockapi.io/data',
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-type': 'application/json; charset=UTF-8',
+        //     },
+        //     body: JSON.stringify(card),
+        // }, (data) => { console.log(data) })
         props.addData(card);
         setCard({ title: '', description: '', fullDescription: '' });
     }
