@@ -4,9 +4,9 @@ function AddPart(props) {
     // const { isLoading, error, sendRequest: sendCard } = useHttp();
     const [editingCard, setEditingCard] = useState({ title: '', description: '', fullDescription: '' });
     const [card, setCard] = useState({ title: '', description: '', fullDescription: '' });
-    if (props.editingMode) {
-        setCard(props.editingObj)
-    }
+    // if (props.editingMode) {
+    //     setCard(props.editingObj)
+    // }
     const titleChangehandler = (e) => {
         setCard((prevState) => {
             return { ...prevState, title: e.target.value }
